@@ -1,14 +1,20 @@
+//imports
 import React, {Component} from 'react';
 import axios from 'axios';
-import apiKey from './config.js';
+import {
+  BrowserRouter, 
+  Route, 
+  Switch
+} from 'react-router-dom';
 import './index.css';
-import {BrowserRouter, Route} from 'react-router-dom';
+
+//importing API key
+import apiKey from './config.js';
 
 //Component Imports
 import SearchForm from './Components/SearchForm';
-import PhotoList from './Components/PhotoList';
+import Gallery from './Components/Gallery';
 import Nav from './Components/Nav';
-import NotFound from './Components/NotFound';
 
 export default class App extends Component{
   constructor() {
@@ -43,28 +49,29 @@ export default class App extends Component{
     return (
       <div>
         <BrowserRouter>
-          {/* <Route path= "/" render={() => <PhotoList data={this.state.images}/>} /> */}
-          <Route path= "/beach"  />
-          <Route path= "/food"  />
-          <Route path= "/money" />
-          <Route path= "/notfound" component={NotFound} />
+          <div className="container">
+            <h1>Gallery App!</h1>
+            <SearchForm onSearch={this.performSearch} />
+          </div>
+
+          {/* Routes */}
+          <Switch>
+          <Route path= "/" />
+          <Route path= "/beach"  render={(props)=> <Gallery {...props} data= {this.state.images}/>} />
+          <Route path= "/food"  render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+          <Route path= "/money" render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+          </Switch>
+
+          <Nav performSearch={this.performSearch}/>
         </BrowserRouter>
-        <div className="container">
-          <h1>Gallery App!</h1>
-          <SearchForm onSearch={this.performSearch} />
-        </div>
-          <nav className="main-nav">
-            <Nav performSearch={this.performSearch}/>
-          </nav>
         <div className="photo-container">
           {
             (this.state.loading)
             ? <p>Loading...</p>
-            : <PhotoList data={this.state.images} />
+            : <Gallery data={this.state.images} />
           }
         </div>
       </div>
     );
-  }
-    
+  } 
 }

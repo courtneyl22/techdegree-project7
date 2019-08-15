@@ -1,28 +1,23 @@
 import React from 'react';
-import {
-  BrowserRouter,
-  NavLink
-} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Nav = (props) => {
   return (
-    <BrowserRouter>
-      <nav>
+      <nav className="main-nav">
       <ul>
-          <li><NavLink to="/beach" onClick={(event) => {
-            props.performSearch("beach")
-          }}>Beach</NavLink></li>
+          <li><NavLink to="/beach" onClick={() => {
+             props.performSearch("beach")
+          }}> Beach </NavLink></li>
 
-          <li><NavLink to="/food" onClick={(event) => {
+          <li><NavLink to="/food" onClick={() => {
             props.performSearch("food")
-          }}>Food</NavLink></li>
-
-          <li><NavLink to="/money" onClick={(event) => {
+          }} > Food </NavLink></li>
+          
+          <li><NavLink to="/money" onClick={() => {
             props.performSearch("money")
-          }}>Money</NavLink></li>
+          }}> Money </NavLink></li>
       </ul>
       </nav>
-    </BrowserRouter>
   )
 } 
 
