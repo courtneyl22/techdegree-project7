@@ -2,7 +2,7 @@ import React from 'react';
 import Photo from './Photo';
 import NotFound from './NotFound';
 
-const PhotoList = (props) => {
+const Gallery = (props) => {
   const results = props.data;
   let photos;
   if(results.length > 0) {
@@ -13,11 +13,13 @@ const PhotoList = (props) => {
   }
       
   return (
+    <div className="photo-container">
       <ul>
-          {photos}  
+        {photos}  
       </ul>
+    </div>
   );
 
 }
 
-export default PhotoList;
+export default Gallery;

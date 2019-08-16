@@ -4,9 +4,13 @@ import axios from 'axios';
 import {
   BrowserRouter, 
   Route, 
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom';
 import './index.css';
+
+//loading icon
+import loading from './loading.svg';
 
 //importing API key
 import apiKey from './config.js';
@@ -25,7 +29,7 @@ export default class App extends Component{
     };
   }
 
-  performSearch = (query = 'poodle') => {
+  performSearch = (query = "poodle") => {
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&per_page=24&format=json&nojsoncallback=1&tags=${query}&extras=url_o`)
       .then(response => {
         this.setState({
@@ -48,29 +52,31 @@ export default class App extends Component{
   render() {
     return (
       <div>
-        <BrowserRouter>
+        <BrowserRouter >
           <div className="container">
             <h1>Gallery App!</h1>
             <SearchForm onSearch={this.performSearch} />
+            <Nav performSearch={this.performSearch}/>
+          </div>
+
+          <div className="photo-container">
+            {
+              (this.state.loading)
+              ? <img src={loading} alt="loading..." />
+              : <Gallery data={this.state.images} />
+            }
           </div>
 
           {/* Routes */}
           <Switch>
-          <Route path= "/" />
-          <Route path= "/beach"  render={(props)=> <Gallery {...props} data= {this.state.images}/>} />
-          <Route path= "/food"  render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
-          <Route path= "/money" render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+            <Route exact path= "/" render={() => <Redirect to="/home"/>}/>
+            <Route path= "/beach"  render={(props)=> <Gallery {...props} data= {this.state.images}/>} />
+            <Route path= "/food"  render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+            <Route path= "/money" render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+            <Route path= "/home" render={(props)=> <Gallery {...props} data= {this.state.images}/>}  />
+            <Route path= {`match.search/:id`} component={SearchForm} />
           </Switch>
-
-          <Nav performSearch={this.performSearch}/>
         </BrowserRouter>
-        <div className="photo-container">
-          {
-            (this.state.loading)
-            ? <p>Loading...</p>
-            : <Gallery data={this.state.images} />
-          }
-        </div>
       </div>
     );
   } 
